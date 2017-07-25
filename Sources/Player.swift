@@ -639,7 +639,9 @@ extension Player {
     }
     
     internal func removePlayerLayerObservers() {
-        self._playerView.layer.removeObserver(self, forKeyPath: PlayerReadyForDisplayKey, context: &PlayerLayerObserverContext)
+        if self._playerView.observationInfo != nil {
+            self._playerView.layer.removeObserver(self, forKeyPath: PlayerReadyForDisplayKey, context: &PlayerLayerObserverContext)
+        }
     }
     
     // MARK: - AVPlayerObservers
@@ -659,7 +661,10 @@ extension Player {
         if let observer = self._timeObserver {
             self._avplayer.removeTimeObserver(observer)
         }
-        self._avplayer.removeObserver(self, forKeyPath: PlayerRateKey, context: &PlayerObserverContext)
+        
+        if self._avplayer.observationInfo != nil {
+            self._avplayer.removeObserver(self, forKeyPath: PlayerRateKey, context: &PlayerObserverContext)
+        }
     }
     
     // MARK: -
